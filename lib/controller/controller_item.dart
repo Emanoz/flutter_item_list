@@ -2,9 +2,9 @@ import 'package:agendamento_consulta_medica/app_database/app_database.dart';
 import 'package:flutter/material.dart';
 
 class ControllerItem {
-  TextEditingController controllerDescricao = TextEditingController();
-  TextEditingController controllerValor = TextEditingController();
-  TextEditingController controllerQuantidade = TextEditingController();
+  TextEditingController controllerDescricao = TextEditingController(text: '');
+  TextEditingController controllerValor = TextEditingController(text: '');
+  TextEditingController controllerQuantidade = TextEditingController(text: '');
   AppDatabase _db = AppDatabase();
 
   Future<void> insertItem(Item item) async {

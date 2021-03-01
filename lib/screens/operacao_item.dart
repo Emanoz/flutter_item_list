@@ -4,13 +4,16 @@ import 'package:agendamento_consulta_medica/mobX/refresh_item_list.dart';
 import 'package:flutter/material.dart';
 
 String _operacao = '';
-Item _itemAtualizado =
-    Item(id: null, descricao: null, valor: null, quantidade: null);
+Item _itemAtualizado;
 
 class OperacaoItem extends StatefulWidget {
   OperacaoItem({String operacao, Item itemAtualizado}) {
     _operacao = operacao;
-    _itemAtualizado = itemAtualizado;
+
+    if (itemAtualizado != null)
+      _itemAtualizado = itemAtualizado;
+    else
+      _itemAtualizado = Item(id: null, descricao: '', valor: 0, quantidade: 0);
   }
 
   @override
@@ -69,19 +72,23 @@ class _OperacaoItemState extends State<OperacaoItem> {
           child: Column(
         children: [
           textField('Descrição', 'Descrição', controller.controllerDescricao,
-              TextInputType.text),
+              TextInputType.text, _itemAtualizado.descricao),
           textField('Valor', 'Valor', controller.controllerValor,
-              TextInputType.number),
+              TextInputType.number, _itemAtualizado.valor.toString()),
           textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
-              TextInputType.number),
+              TextInputType.number, _itemAtualizado.quantidade.toString()),
         ],
       )),
     );
   }
 }
 
-Widget textField(String label, String hintText,
-    TextEditingController controller, TextInputType keyboard) {
+Widget textField(
+    String label,
+    String hintText,
+    TextEditingController controller,
+    TextInputType keyboard,
+    String initialText) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: TextField(
@@ -90,7 +97,7 @@ Widget textField(String label, String hintText,
         hintText: hintText,
         border: OutlineInputBorder(),
       ),
-      controller: controller,
+      controller: controller..text = initialText,
       keyboardType: keyboard,
     ),
   );
