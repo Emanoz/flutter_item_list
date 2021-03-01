@@ -1,4 +1,4 @@
-import 'package:agendamento_consulta_medica/app_database.dart';
+import 'package:agendamento_consulta_medica/app_database/app_database.dart';
 import 'package:flutter/material.dart';
 
 class ControllerItem {

@@ -1,8 +1,6 @@
-import 'package:agendamento_consulta_medica/controller_item.dart';
+import 'package:agendamento_consulta_medica/app_database/app_database.dart';
+import 'package:agendamento_consulta_medica/controller/controller_item.dart';
 import 'package:mobx/mobx.dart';
-
-import 'app_database.dart';
-
 part 'refresh_item_list.g.dart';
 
 class RefreshItemList = _RefreshItemList with _$RefreshItemList;
