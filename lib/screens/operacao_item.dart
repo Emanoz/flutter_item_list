@@ -66,44 +66,22 @@ class _OperacaoItemState extends State<OperacaoItem> {
         ],
       ),
       body: Center(
-        child: operacaoTextField(),
-      ),
+          child: Column(
+        children: [
+          textField('Descrição', 'Descrição', controller.controllerDescricao,
+              TextInputType.text),
+          textField('Valor', 'Valor', controller.controllerValor,
+              TextInputType.number),
+          textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
+              TextInputType.number),
+        ],
+      )),
     );
   }
 }
 
-Widget operacaoTextField() {
-  if (_operacao == 'Adicionar') {
-    return Column(
-      children: [
-        textField('Descrição', 'Descrição', controller.controllerDescricao,
-            TextInputType.text, ''),
-        textField('Valor', 'Valor', controller.controllerValor,
-            TextInputType.number, ''),
-        textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
-            TextInputType.number, ''),
-      ],
-    );
-  } else {
-    return Column(
-      children: [
-        textField('Descrição', 'Descrição', controller.controllerDescricao,
-            TextInputType.text, _itemAtualizado.descricao),
-        textField('Valor', 'Valor', controller.controllerValor,
-            TextInputType.number, _itemAtualizado.valor.toString()),
-        textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
-            TextInputType.number, _itemAtualizado.quantidade.toString()),
-      ],
-    );
-  }
-}
-
-Widget textField(
-    String label,
-    String hintText,
-    TextEditingController controller,
-    TextInputType keyboard,
-    String initialText) {
+Widget textField(String label, String hintText,
+    TextEditingController controller, TextInputType keyboard) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: TextField(
@@ -112,7 +90,7 @@ Widget textField(
         hintText: hintText,
         border: OutlineInputBorder(),
       ),
-      controller: controller..text = initialText,
+      controller: controller,
       keyboardType: keyboard,
     ),
   );
