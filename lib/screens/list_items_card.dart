@@ -4,7 +4,6 @@ import 'package:agendamento_consulta_medica/screens/operacao_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
-import 'package:path/path.dart';
 
 class ListaItemsCard extends StatefulWidget {
   @override
@@ -108,7 +107,7 @@ Widget _itemCard(Item item, BuildContext context) {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => OperacaoItem(
-                            operacao: 'Atualizar', item_atualizado: item)));
+                            operacao: 'Atualizar', itemAtualizado: item)));
               },
             ),
             TextButton(

@@ -2,9 +2,9 @@ import 'package:agendamento_consulta_medica/app_database/app_database.dart';
 import 'package:flutter/material.dart';
 
 class ControllerItem {
-  TextEditingController controller_descricao = TextEditingController();
-  TextEditingController controller_valor = TextEditingController();
-  TextEditingController controller_quantidade = TextEditingController();
+  TextEditingController controllerDescricao = TextEditingController();
+  TextEditingController controllerValor = TextEditingController();
+  TextEditingController controllerQuantidade = TextEditingController();
   AppDatabase _db = AppDatabase();
 
   Future<void> insertItem(Item item) async {
@@ -25,7 +25,6 @@ class ControllerItem {
 
   @override
   String toString() {
-    // TODO: implement toString
-    return 'ControllerItem{descricao: ${controller_descricao.text}; valor: ${controller_valor.text}; quantidade: ${controller_quantidade.text}}';
+    return 'ControllerItem{descricao: ${controllerDescricao.text}; valor: ${controllerValor.text}; quantidade: ${controllerQuantidade.text}}';
   }
 }

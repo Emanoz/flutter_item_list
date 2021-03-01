@@ -1,8 +1,4 @@
-import 'dart:io';
-import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 // assuming that your file is called filename.dart. This will give an error at first,

@@ -4,12 +4,13 @@ import 'package:agendamento_consulta_medica/mobX/refresh_item_list.dart';
 import 'package:flutter/material.dart';
 
 String _operacao = '';
-Item _item_atualizado = Item();
+Item _itemAtualizado =
+    Item(id: null, descricao: null, valor: null, quantidade: null);
 
 class OperacaoItem extends StatefulWidget {
-  OperacaoItem({String operacao, Item item_atualizado}) {
+  OperacaoItem({String operacao, Item itemAtualizado}) {
     _operacao = operacao;
-    _item_atualizado = item_atualizado;
+    _itemAtualizado = itemAtualizado;
   }
 
   @override
@@ -44,16 +45,17 @@ class _OperacaoItemState extends State<OperacaoItem> {
             icon: Icon(Icons.send),
             onPressed: () async {
               Item item = Item(
-                  descricao: controller.controller_descricao.text,
+                  id: null,
+                  descricao: controller.controllerDescricao.text,
                   quantidade:
-                      int.tryParse(controller.controller_quantidade.text),
-                  valor: double.tryParse(controller.controller_valor.text));
+                      int.tryParse(controller.controllerQuantidade.text),
+                  valor: double.tryParse(controller.controllerValor.text));
 
               if (_operacao == 'Adicionar') {
                 await refresh.insertItem(item);
               } else {
                 await refresh.updateItem(Item(
-                    id: _item_atualizado.id,
+                    id: _itemAtualizado.id,
                     descricao: item.descricao,
                     valor: item.valor,
                     quantidade: item.quantidade));
@@ -64,22 +66,44 @@ class _OperacaoItemState extends State<OperacaoItem> {
         ],
       ),
       body: Center(
-        child: Column(
-          children: [
-            textField(
-                'Descrição', 'Descrição', controller.controller_descricao),
-            textField('Valor', 'Valor', controller.controller_valor),
-            textField(
-                'Quantidade', 'Quantidade', controller.controller_quantidade),
-          ],
-        ),
+        child: operacaoTextField(),
       ),
     );
   }
 }
 
+Widget operacaoTextField() {
+  if (_operacao == 'Adicionar') {
+    return Column(
+      children: [
+        textField('Descrição', 'Descrição', controller.controllerDescricao,
+            TextInputType.text, ''),
+        textField('Valor', 'Valor', controller.controllerValor,
+            TextInputType.number, ''),
+        textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
+            TextInputType.number, ''),
+      ],
+    );
+  } else {
+    return Column(
+      children: [
+        textField('Descrição', 'Descrição', controller.controllerDescricao,
+            TextInputType.text, _itemAtualizado.descricao),
+        textField('Valor', 'Valor', controller.controllerValor,
+            TextInputType.number, _itemAtualizado.valor.toString()),
+        textField('Quantidade', 'Quantidade', controller.controllerQuantidade,
+            TextInputType.number, _itemAtualizado.quantidade.toString()),
+      ],
+    );
+  }
+}
+
 Widget textField(
-    String label, String hintText, TextEditingController controller) {
+    String label,
+    String hintText,
+    TextEditingController controller,
+    TextInputType keyboard,
+    String initialText) {
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: TextField(
@@ -88,7 +112,8 @@ Widget textField(
         hintText: hintText,
         border: OutlineInputBorder(),
       ),
-      controller: controller,
+      controller: controller..text = initialText,
+      keyboardType: keyboard,
     ),
   );
 }
