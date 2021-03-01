@@ -1,9 +1,10 @@
 import 'package:agendamento_consulta_medica/app_database/app_database.dart';
 import 'package:agendamento_consulta_medica/mobX/refresh_item_list.dart';
-import 'package:agendamento_consulta_medica/screens/AdicionaItem.dart';
+import 'package:agendamento_consulta_medica/screens/operacao_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
+import 'package:path/path.dart';
 
 class ListaItemsCard extends StatefulWidget {
   @override
@@ -48,7 +49,7 @@ class _ListaItemsCardState extends State<ListaItemsCard> {
         ),
         body: Observer(builder: (context) {
           return ListView(
-            children: [_refreshItems(refresh)],
+            children: [_refreshItems(refresh, context)],
             scrollDirection: Axis.vertical,
           );
         }),
@@ -60,23 +61,24 @@ class _ListaItemsCardState extends State<ListaItemsCard> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AdicionaItem()));
+                      builder: (BuildContext context) =>
+                          OperacaoItem(operacao: 'Adicionar')));
             },
           ),
         ));
   }
 }
 
-Widget _refreshItems(RefreshItemList refresh) {
+Widget _refreshItems(RefreshItemList refresh, BuildContext context) {
   refresh.refreshItemList();
 
   return Column(
     children: List.generate(refresh.listaItems.length,
-        (int index) => _itemCard(refresh.listaItems[index])),
+        (int index) => _itemCard(refresh.listaItems[index], context)),
   );
 }
 
-Widget _itemCard(Item item) {
+Widget _itemCard(Item item, BuildContext context) {
   RefreshItemList refresh = RefreshItemList();
 
   return Card(
@@ -85,16 +87,29 @@ Widget _itemCard(Item item) {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          leading: Icon(Icons.payment),
+          leading: Icon(Icons.add_shopping_cart_rounded),
           title: Text(item.descricao),
-          subtitle: Text('Preço: ' + item.valor.toString()),
+          subtitle: RichText(
+            text: TextSpan(
+                text: 'Preço: ' + item.valor.toString(),
+                style: TextStyle(color: Colors.black54),
+                children: [
+                  TextSpan(text: '\nQuantidade: ' + item.quantidade.toString()),
+                ]),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
               child: Text('Atualizar'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => OperacaoItem(
+                            operacao: 'Atualizar', item_atualizado: item)));
+              },
             ),
             TextButton(
               child: Text('Excluir'),

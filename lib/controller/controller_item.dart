@@ -19,6 +19,10 @@ class ControllerItem {
     await _db.deleteItem(item);
   }
 
+  Future<void> updateItem(Item item) async {
+    await _db.updateItem(item);
+  }
+
   @override
   String toString() {
     // TODO: implement toString

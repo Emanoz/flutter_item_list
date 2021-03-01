@@ -27,4 +27,9 @@ abstract class _RefreshItemList with Store {
   Future<void> deleteItem(Item item) async {
     await controller.deleteItem(item);
   }
+
+  @action
+  Future<void> updateItem(Item item) async {
+    await controller.updateItem(item);
+  }
 }

@@ -46,6 +46,13 @@ mixin _$RefreshItemList on _RefreshItemList, Store {
     return _$deleteItemAsyncAction.run(() => super.deleteItem(item));
   }
 
+  final _$updateItemAsyncAction = AsyncAction('_RefreshItemList.updateItem');
+
+  @override
+  Future<void> updateItem(dynamic item) {
+    return _$updateItemAsyncAction.run(() => super.updateItem(item));
+  }
+
   @override
   String toString() {
     return '''
