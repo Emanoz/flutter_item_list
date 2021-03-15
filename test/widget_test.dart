@@ -5,26 +5,73 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:agendamento_consulta_medica/app_database/app_database.dart';
+import 'package:agendamento_consulta_medica/main.dart';
+import 'package:agendamento_consulta_medica/screens/list_items_card.dart';
+import 'package:agendamento_consulta_medica/screens/operacao_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:agendamento_consulta_medica/main.dart';
+import 'matchers.dart';
+import 'mock.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('Deve salvar um novo item', (tester) async {
+    final mockItemList = MockItemList();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(MyApp(
+      refreshItemList: mockItemList,
+    ));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Testa se o widget ListaItemsCard foi instanciado (se existe)
+    final listItemsCard = find.byType(ListaItemsCard);
+    expect(listItemsCard, findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Testa se o widget FAB foi instanciado, clica nele e espera carregar os microserviços (animações, nova tela instanciada, etc.)
+    final fabNewItem = find.widgetWithIcon(FloatingActionButton, Icons.add);
+    expect(fabNewItem, findsOneWidget);
+    await tester.tap(fabNewItem);
+    await tester.pumpAndSettle();
+
+    // Testa se foi instanciada a tela OperaçãoItem
+    final operacaoItem = find.byType(OperacaoItem);
+    expect(operacaoItem, findsOneWidget);
+
+    // Testa se o textfield 'Descrição' foi instanciado e digita o texto 'Estojo' nele
+    final descricaoTextField = find
+        .byWidgetPredicate((widget) => textFieldMatcher(widget, 'Descrição'));
+    expect(descricaoTextField, findsOneWidget);
+    await tester.enterText(descricaoTextField, 'Estojo');
+
+    // Testa se o textfield 'Valor' foi instanciado e digita o texto '115.5' nele
+    final valorTextField =
+        find.byWidgetPredicate((widget) => textFieldMatcher(widget, 'Valor'));
+    expect(valorTextField, findsOneWidget);
+    await tester.enterText(valorTextField, '115.5');
+
+    // Testa se o textfield 'Quantidade' foi instanciado e digita o texto '3' nele
+    final quantidadeTextField = find
+        .byWidgetPredicate((widget) => textFieldMatcher(widget, 'Quantidade'));
+    expect(quantidadeTextField, findsOneWidget);
+    await tester.enterText(quantidadeTextField, '3');
+
+    //Testa se o botão de criar um novo item foi instanciado; clica nele e espera carregar os microserviços
+    final sendButton = find.widgetWithIcon(IconButton, Icons.send);
+    expect(sendButton, findsOneWidget);
+    await tester.tap(sendButton);
+    await tester.pumpAndSettle();
+
+    // Verifica se o método insertItem foi chamado
+    verify(mockItemList.insertItem(
+        Item(id: null, descricao: 'Estojo', valor: 115.5, quantidade: 3)));
+
+    // Volta no ListItemCard e testa se o widget foi instanciado (se existe)
+    final listItemsCardBack = find.byType(ListaItemsCard);
+    expect(listItemsCardBack, findsOneWidget);
+    //tester.pumpAndSettle();
+
+    // Verifica se o método refreshItemList foi chamado
+    verify(mockItemList.refreshItemList());
   });
 }

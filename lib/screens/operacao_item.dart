@@ -1,6 +1,7 @@
 import 'package:agendamento_consulta_medica/app_database/app_database.dart';
 import 'package:agendamento_consulta_medica/controller/controller_item.dart';
 import 'package:agendamento_consulta_medica/mobX/refresh_item_list.dart';
+import 'package:agendamento_consulta_medica/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
 
 String _operacao = '';
@@ -30,6 +31,7 @@ class _OperacaoItemState extends State<OperacaoItem> {
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = AppDependencies.of(context);
     RefreshItemList refresh = RefreshItemList();
 
     return Scaffold(
@@ -55,9 +57,9 @@ class _OperacaoItemState extends State<OperacaoItem> {
                   valor: double.tryParse(controller.controllerValor.text));
 
               if (_operacao == 'Adicionar') {
-                await refresh.insertItem(item);
+                await dependencies.refreshItemList.insertItem(item);
               } else {
-                await refresh.updateItem(Item(
+                await dependencies.refreshItemList.updateItem(Item(
                     id: _itemAtualizado.id,
                     descricao: item.descricao,
                     valor: item.valor,
