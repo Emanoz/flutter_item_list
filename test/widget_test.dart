@@ -34,7 +34,7 @@ void main() {
     await tester.tap(fabNewItem);
     await tester.pumpAndSettle();
 
-    // Testa se foi instanciada a tela OperaçãoItem
+    // Testa se foi instanciada a tela OperacaoItem
     final operacaoItem = find.byType(OperacaoItem);
     expect(operacaoItem, findsOneWidget);
 
@@ -66,7 +66,7 @@ void main() {
     verify(mockItemList.insertItem(
         Item(id: null, descricao: 'Estojo', valor: 115.5, quantidade: 3)));
 
-    // Volta no ListItemCard e testa se o widget foi instanciado (se existe)
+    // Volta no ListaItemCard e testa se o widget foi instanciado (se existe)
     final listItemsCardBack = find.byType(ListaItemsCard);
     expect(listItemsCardBack, findsOneWidget);
     //tester.pumpAndSettle();
